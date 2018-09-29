@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="August&#39;s Blog">
 <meta property="og:description" content="常见的xss攻击方法1.绕过XSS-Filter利用&amp;lt;&amp;gt;标签注入Html/JavaScript代码。 2.利用HTML标签的属性值进行xss攻击">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-29T07:05:20.245Z">
+<meta property="og:updated_time" content="2018-09-29T07:26:29.329Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于XSS攻击">
 <meta name="twitter:description" content="常见的xss攻击方法1.绕过XSS-Filter利用&amp;lt;&amp;gt;标签注入Html/JavaScript代码。 2.利用HTML标签的属性值进行xss攻击">
@@ -556,7 +556,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  807 字
+                  813 字
                 </span>
               
 
@@ -605,7 +605,7 @@
 <h2 id="7-利用字符编码"><a href="#7-利用字符编码" class="headerlink" title="7.利用字符编码"></a>7.利用字符编码</h2><p>透过这种技巧，不仅能让XSS代码绕过服务端的过滤，还能更好地隐藏Shellcode；（JS支持unicode、eacapes、十六进制、十进制等编码形式）。</p>
 <h2 id="8-拆分跨站法"><a href="#8-拆分跨站法" class="headerlink" title="8.拆分跨站法"></a>8.拆分跨站法</h2><p>将xss攻击的代码拆分开来，适用于应用程序没有过滤 XSS关键字符（如<code>&lt;、&gt;</code>）却对输入字符长度有限制的情况下。</p>
 <h2 id="9-DOM型的XSS"><a href="#9-DOM型的XSS" class="headerlink" title="9.DOM型的XSS"></a>9.DOM型的XSS</h2><p>DOM型的XSS主要是由客户端的脚本通过DOM动态地输出数据到页面上，它不依赖于提交数据到服务器，而是从客户端获得DOM中的数据在本地执行。容易导致DOM型的XSS的输入源包括：<code>Document.URL</code>、<code>Location(.pathname|.href|.search|.hash)</code>、<code>Document.referrer</code>、<code>Window.name</code>、<code>Document.cookie</code>、<code>localStorage/globalStorage</code>；</p>
-<h1 id="XSS攻击防御"><a href="#XSS攻击防御" class="headerlink" title="XSS攻击防御"></a>XSS攻击防御</h1><p>　　原则：不相信客户输入的数据<br>　　注意:  攻击代码不一定在<script></script>中</p>
+<h1 id="XSS攻击防御"><a href="#XSS攻击防御" class="headerlink" title="XSS攻击防御"></a>XSS攻击防御</h1><p>　　原则：不相信客户输入的数据<br>　　注意:  攻击代码不一定在<code>&lt;script&gt;&lt;/script&gt;</code>中</p>
 <h2 id="1-使用XSS-Filter。"><a href="#1-使用XSS-Filter。" class="headerlink" title="1.使用XSS Filter。"></a>1.使用XSS Filter。</h2><p>输入过滤，对用户提交的数据进行有效性验证，仅接受指定长度范围内并符合我们期望格式的的内容提交，阻止或者忽略除此外的其他任何数据。比如：电话号码必须是数字和中划线组成，而且要设定长度上限。过滤一些些常见的敏感字符，例如：<code>&lt; &gt; &#39; &quot; &amp; # \ javascript expression  &quot;onclick=&quot;  &quot;onfocus&quot;</code>；过滤或移除特殊的Html标签，<br>例如: <code>&lt;script&gt;</code>, <code>&lt;iframe&gt;</code> ,  &lt; for &lt;, &gt; for &gt;, &quot; for；过滤JavaScript 事件的标签，例如 “onclick=”, “onfocus” 等等。<br>    输出编码，当需要将一个字符串输出到Web网页时，同时又不确定这个字符串中是否包括XSS特殊字符（如<code>&lt; &gt; &amp; &#39;&quot;</code>等），为了确保输出内容的完整性和正确性，可以使用编码（HTMLEncode）进行处理。</p>
 <h2 id="2-DOM型的XSS攻击防御"><a href="#2-DOM型的XSS攻击防御" class="headerlink" title="2.DOM型的XSS攻击防御"></a>2.DOM型的XSS攻击防御</h2><p>　　把变量输出到页面时要做好相关的编码转义工作，如要输出到 <code>&lt;script&gt;</code>中，可以进行JS编码；要输出到HTML内容或属性，则进行HTML编码处理。根据不同的语境采用不同的编码处理方式。</p>
 <h2 id="3-HttpOnly-Cookie"><a href="#3-HttpOnly-Cookie" class="headerlink" title="3.HttpOnly Cookie"></a>3.HttpOnly Cookie</h2><p>　　将重要的cookie标记为http only，这样的话当浏览器向Web服务器发起请求的时就会带上cookie字段，但是在脚本中却不能访问这个cookie，这样就避免了XSS攻击利用JavaScript的<code>document.cookie</code>获取cookie。</p>
