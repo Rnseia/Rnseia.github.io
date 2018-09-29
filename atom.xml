@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-09-25T09:06:03.706Z</updated>
+  <updated>2018-09-29T07:05:20.245Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于XSS攻击</title>
+    <link href="http://yoursite.com/2018/09/29/%E5%85%B3%E4%BA%8EXSS%E6%94%BB%E5%87%BB/"/>
+    <id>http://yoursite.com/2018/09/29/关于XSS攻击/</id>
+    <published>2018-09-29T06:42:34.732Z</published>
+    <updated>2018-09-29T07:05:20.245Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="常见的xss攻击方法"><a href="#常见的xss攻击方法" class="headerlink" title="常见的xss攻击方法"></a>常见的xss攻击方法</h1><h2 id="1-绕过XSS-Filter"><a href="#1-绕过XSS-Filter" class="headerlink" title="1.绕过XSS-Filter"></a>1.绕过XSS-Filter</h2><p>利用&lt;&gt;标签注入Html/JavaScript代码。</p><h2 id="2-利用HTML标签的属性值进行xss攻击"><a href="#2-利用HTML标签的属性值进行xss攻击" class="headerlink" title="2.利用HTML标签的属性值进行xss攻击"></a>2.利用HTML标签的属性值进行xss攻击</h2><a id="more"></a><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"javascript:alert('xss')"</span>/&gt;;</span><br></pre></td></tr></table></figure><p>（当然并不是所有的Web浏览器都支持Javascript伪协议，所以此类XSS攻击具有一定的局限性）。</p><h2 id="3-空格、回车和Tab"><a href="#3-空格、回车和Tab" class="headerlink" title="3. 空格、回车和Tab"></a>3. 空格、回车和Tab</h2><p>如果XSS Filter仅仅将敏感的输入字符列入黑名单，比如javascript，用户可以利用空格、回车和Tab键来绕过过滤，<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"javas  cript:alert(/xss/);"</span>/&gt;;</span><br></pre></td></tr></table></figure></p><h2 id="4-利用事件来执行跨站脚本"><a href="#4-利用事件来执行跨站脚本" class="headerlink" title="4. 利用事件来执行跨站脚本"></a>4. 利用事件来执行跨站脚本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"#"</span> onerror=<span class="string">"alert(1)"</span>/&gt;;</span><br></pre></td></tr></table></figure><p>当src错误的视乎就会执行onerror事件。</p><h2 id="5-利用CSS跨站"><a href="#5-利用CSS跨站" class="headerlink" title="5. 利用CSS跨站"></a>5. 利用CSS跨站</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：Body &#123;backgrund-image: url(<span class="string">"javascript:alert('xss')"</span>)&#125;;</span><br></pre></td></tr></table></figure><h2 id="6-扰乱过滤规则"><a href="#6-扰乱过滤规则" class="headerlink" title="6. 扰乱过滤规则"></a>6. 扰乱过滤规则</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"javaSCript: alert(/xss/);"</span>/&gt;;</span><br></pre></td></tr></table></figure><h2 id="7-利用字符编码"><a href="#7-利用字符编码" class="headerlink" title="7.利用字符编码"></a>7.利用字符编码</h2><p>透过这种技巧，不仅能让XSS代码绕过服务端的过滤，还能更好地隐藏Shellcode；（JS支持unicode、eacapes、十六进制、十进制等编码形式）。</p><h2 id="8-拆分跨站法"><a href="#8-拆分跨站法" class="headerlink" title="8.拆分跨站法"></a>8.拆分跨站法</h2><p>将xss攻击的代码拆分开来，适用于应用程序没有过滤 XSS关键字符（如<code>&lt;、&gt;</code>）却对输入字符长度有限制的情况下。</p><h2 id="9-DOM型的XSS"><a href="#9-DOM型的XSS" class="headerlink" title="9.DOM型的XSS"></a>9.DOM型的XSS</h2><p>DOM型的XSS主要是由客户端的脚本通过DOM动态地输出数据到页面上，它不依赖于提交数据到服务器，而是从客户端获得DOM中的数据在本地执行。容易导致DOM型的XSS的输入源包括：<code>Document.URL</code>、<code>Location(.pathname|.href|.search|.hash)</code>、<code>Document.referrer</code>、<code>Window.name</code>、<code>Document.cookie</code>、<code>localStorage/globalStorage</code>；</p><h1 id="XSS攻击防御"><a href="#XSS攻击防御" class="headerlink" title="XSS攻击防御"></a>XSS攻击防御</h1><p>　　原则：不相信客户输入的数据<br>　　注意:  攻击代码不一定在<script></script>中</p><h2 id="1-使用XSS-Filter。"><a href="#1-使用XSS-Filter。" class="headerlink" title="1.使用XSS Filter。"></a>1.使用XSS Filter。</h2><p>输入过滤，对用户提交的数据进行有效性验证，仅接受指定长度范围内并符合我们期望格式的的内容提交，阻止或者忽略除此外的其他任何数据。比如：电话号码必须是数字和中划线组成，而且要设定长度上限。过滤一些些常见的敏感字符，例如：<code>&lt; &gt; &#39; &quot; &amp; # \ javascript expression  &quot;onclick=&quot;  &quot;onfocus&quot;</code>；过滤或移除特殊的Html标签，<br>例如: <code>&lt;script&gt;</code>, <code>&lt;iframe&gt;</code> ,  &lt; for &lt;, &gt; for &gt;, &quot; for；过滤JavaScript 事件的标签，例如 “onclick=”, “onfocus” 等等。<br>    输出编码，当需要将一个字符串输出到Web网页时，同时又不确定这个字符串中是否包括XSS特殊字符（如<code>&lt; &gt; &amp; &#39;&quot;</code>等），为了确保输出内容的完整性和正确性，可以使用编码（HTMLEncode）进行处理。</p><h2 id="2-DOM型的XSS攻击防御"><a href="#2-DOM型的XSS攻击防御" class="headerlink" title="2.DOM型的XSS攻击防御"></a>2.DOM型的XSS攻击防御</h2><p>　　把变量输出到页面时要做好相关的编码转义工作，如要输出到 <code>&lt;script&gt;</code>中，可以进行JS编码；要输出到HTML内容或属性，则进行HTML编码处理。根据不同的语境采用不同的编码处理方式。</p><h2 id="3-HttpOnly-Cookie"><a href="#3-HttpOnly-Cookie" class="headerlink" title="3.HttpOnly Cookie"></a>3.HttpOnly Cookie</h2><p>　　将重要的cookie标记为http only，这样的话当浏览器向Web服务器发起请求的时就会带上cookie字段，但是在脚本中却不能访问这个cookie，这样就避免了XSS攻击利用JavaScript的<code>document.cookie</code>获取cookie。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;常见的xss攻击方法&quot;&gt;&lt;a href=&quot;#常见的xss攻击方法&quot; class=&quot;headerlink&quot; title=&quot;常见的xss攻击方法&quot;&gt;&lt;/a&gt;常见的xss攻击方法&lt;/h1&gt;&lt;h2 id=&quot;1-绕过XSS-Filter&quot;&gt;&lt;a href=&quot;#1-绕过XSS-Filter&quot; class=&quot;headerlink&quot; title=&quot;1.绕过XSS-Filter&quot;&gt;&lt;/a&gt;1.绕过XSS-Filter&lt;/h2&gt;&lt;p&gt;利用&amp;lt;&amp;gt;标签注入Html/JavaScript代码。&lt;/p&gt;
+&lt;h2 id=&quot;2-利用HTML标签的属性值进行xss攻击&quot;&gt;&lt;a href=&quot;#2-利用HTML标签的属性值进行xss攻击&quot; class=&quot;headerlink&quot; title=&quot;2.利用HTML标签的属性值进行xss攻击&quot;&gt;&lt;/a&gt;2.利用HTML标签的属性值进行xss攻击&lt;/h2&gt;
+    
+    </summary>
+    
+      <category term="前端" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="Javascript" scheme="http://yoursite.com/tags/Javascript/"/>
+    
+  </entry>
   
   <entry>
     <title>centos7中安装mysql的步骤</title>

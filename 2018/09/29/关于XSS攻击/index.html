@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="简介：Webpack 是当下最热门的前端资源模块化管理和打包工具。它可以将许多松散的模块按照依赖和规则打包成符合生产环境部署的前端资源。还可以将按需加载的模块进行代码分隔，等到实际需要的时候再异步加载。webpack已经是大部分前端项目打包工具的首选，grunt、glup、browserify、fis等逐渐沦为辅助甚至完全被替代。">
+<meta name="description" content="常见的xss攻击方法1.绕过XSS-Filter利用&amp;lt;&amp;gt;标签注入Html/JavaScript代码。 2.利用HTML标签的属性值进行xss攻击">
 <meta name="keywords" content="Javascript">
 <meta property="og:type" content="article">
-<meta property="og:title" content="webpack基础">
-<meta property="og:url" content="http://yoursite.com/2018/09/21/webpack基础/index.html">
+<meta property="og:title" content="关于XSS攻击">
+<meta property="og:url" content="http://yoursite.com/2018/09/29/关于XSS攻击/index.html">
 <meta property="og:site_name" content="August&#39;s Blog">
-<meta property="og:description" content="简介：Webpack 是当下最热门的前端资源模块化管理和打包工具。它可以将许多松散的模块按照依赖和规则打包成符合生产环境部署的前端资源。还可以将按需加载的模块进行代码分隔，等到实际需要的时候再异步加载。webpack已经是大部分前端项目打包工具的首选，grunt、glup、browserify、fis等逐渐沦为辅助甚至完全被替代。">
+<meta property="og:description" content="常见的xss攻击方法1.绕过XSS-Filter利用&amp;lt;&amp;gt;标签注入Html/JavaScript代码。 2.利用HTML标签的属性值进行xss攻击">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-25T09:08:42.959Z">
+<meta property="og:updated_time" content="2018-09-29T07:05:20.245Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="webpack基础">
-<meta name="twitter:description" content="简介：Webpack 是当下最热门的前端资源模块化管理和打包工具。它可以将许多松散的模块按照依赖和规则打包成符合生产环境部署的前端资源。还可以将按需加载的模块进行代码分隔，等到实际需要的时候再异步加载。webpack已经是大部分前端项目打包工具的首选，grunt、glup、browserify、fis等逐渐沦为辅助甚至完全被替代。">
+<meta name="twitter:title" content="关于XSS攻击">
+<meta name="twitter:description" content="常见的xss攻击方法1.绕过XSS-Filter利用&amp;lt;&amp;gt;标签注入Html/JavaScript代码。 2.利用HTML标签的属性值进行xss攻击">
 
 
 
@@ -122,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/09/21/webpack基础/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/09/29/关于XSS攻击/"/>
 
 
 
@@ -130,7 +130,7 @@
 
 <!-- 网页加载条 -->
 <script src="https://neveryu.github.io/js/src/pace.min.js"></script>
-  <title>webpack基础 | August's Blog</title>
+  <title>关于XSS攻击 | August's Blog</title>
   
 
 
@@ -468,7 +468,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/21/webpack基础/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/29/关于XSS攻击/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="August">
@@ -485,7 +485,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">webpack基础</h1>
+          <h1 class="post-title" itemprop="name headline">关于XSS攻击</h1>
         
 
         <div class="post-meta">
@@ -497,8 +497,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-21T11:31:43+08:00">
-                2018-09-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-29T14:42:34+08:00">
+                2018-09-29
               </time>
             
 
@@ -556,7 +556,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1k 字
+                  807 字
                 </span>
               
 
@@ -572,7 +572,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -593,24 +593,22 @@
       
 
       
-        <h2 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h2><p>Webpack 是当下最热门的前端资源模块化管理和打包工具。它可以将许多松散的模块按照依赖和规则打包成符合生产环境部署的前端资源。还可以将按需加载的模块进行代码分隔，等到实际需要的时候再异步加载。<br>webpack已经是大部分前端项目打包工具的首选，grunt、glup、browserify、fis等逐渐沦为辅助甚至完全被替代。<br><a id="more"></a></p>
-<h2 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h2><p>注册cnpm：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure></p>
-<p>全局安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g webpack</span><br></pre></td></tr></table></figure></p>
-<p>项目安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cnpm init</span><br><span class="line">cnpm install –save-dev webpack</span><br></pre></td></tr></table></figure></p>
-<h2 id="使用："><a href="#使用：" class="headerlink" title="使用："></a>使用：</h2><p>1)    无配置文件使用：<br>    webpack 源文件  目标文件<br>例：webpack  index.js  bound.js<br>2)    使用配置文件：<br>    默认配置文件:<br>        webpack.config.js<br>    可以配置多个config文件</p>
-<h2 id="文件配置"><a href="#文件配置" class="headerlink" title="文件配置"></a>文件配置</h2><p>关于 webpack.config.js 的配置规则如下：<br>需要采用common.js规范进行文件的抛出一个webpack的配置对象：<br>module.exports={}</p>
-<h3 id="入口文件属性："><a href="#入口文件属性：" class="headerlink" title="入口文件属性："></a>入口文件属性：</h3><h4 id="字符串："><a href="#字符串：" class="headerlink" title="字符串："></a>字符串：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">entry：__dirname+文件路径  //__dirname是node的全局文件根目录，推荐采用此种写法；</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">entry：./文件路径  //此种写法,貌似在3.0版本中不再支持，不推荐此种写法</span><br></pre></td></tr></table></figure>
-<h4 id="对象语法："><a href="#对象语法：" class="headerlink" title="对象语法："></a>对象语法：</h4><p>a)    单入口文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">entry：&#123;</span><br><span class="line">	main：__dirname+文件路径</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>b)    多入口文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">entry：&#123;</span><br><span class="line">	app1：__dirname+文件路径，</span><br><span class="line">	app2：__dirname+文件路径，</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="输出文件属性："><a href="#输出文件属性：" class="headerlink" title="输出文件属性："></a>输出文件属性：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">output：&#123;</span><br><span class="line">    path: __dirname+文件路径  //__dirname是node的全局文件根目录，采用此种写法；</span><br><span class="line">    path：./文件路径  //此种写法不支持</span><br><span class="line">    filename：输出文件名  //如果多入口文件，不能指定文件名，需要使用[name]动态获取；</span><br><span class="line">    chunkFilename:[name][<span class="built_in">hash</span>] //name为模块的名字，<span class="built_in">hash</span>加入<span class="built_in">hash</span>值，防止缓存，使用此属性是，模块的引入必须结合require.ensure方法，否则此方法无效；</span><br><span class="line">    publicPath:设置服务路径</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="加载器："><a href="#加载器：" class="headerlink" title="加载器："></a>加载器：</h3><p>1、    语法：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">module: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;<span class="built_in">test</span>: /\.css$/, use: [<span class="string">'css-loader'</span>](/loaders/css-loader)&#125;,</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>2、    rules数组中每个规则的属性：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">test</span>：要匹配的文件类型；</span><br><span class="line">use:使用何种加载器进行加载处理文件，可以同时使用多个loader，数组的形式；数组的值，可以为字符串，或者对象；</span><br><span class="line">loader：使用何种加载器加载处理文件，只能加载一个loader。字符串形式；</span><br><span class="line">options：加载器的配置项;</span><br></pre></td></tr></table></figure></p>
-<p>3、    常用的loader：<br>style-loader、css-loader、url-loader、html-loader、babel-loader、eslint-loader、vue-loader……    </p>
-<h3 id="插件："><a href="#插件：" class="headerlink" title="插件："></a>插件：</h3><p>1、    语法：<br>plugins：[ ]<br>2、    常用插件：<br>a)    内置插件<br>UglifyJsPlugin、HotModuleReplacementPlugin、CommonsChunkPlugin……<br>配置项：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    name：( 公共chunk(commnons chunk) 的名称),</span><br><span class="line">    filename：( 公共chunk 的文件名)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>b)    三方插件<br>HtmlWebpackPlugin<br>配置项：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    template：<span class="string">""</span> //入口html的路径</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="devtool"><a href="#devtool" class="headerlink" title="devtool:"></a>devtool:</h3><p>1、    开发环境：推荐使用（cheap-module-eval-source-map）<br>eval-source-map: 每个模块使用 eval() 执行，并且 SourceMap 转换为 DataUrl 后添加到 eval() 中。初始化 SourceMap 时比较慢，但是会在重构建时提供很快的速度，并且生成实际的文件。行数能够正确映射，因为会映射到原始代码中。<br>cheap-module-eval-source-map：”低开销”是因为它没有生成列映射(column map)，只是映射行数；<br>2、    生产环境：推荐使用（source-map）<br>source-map - 生成完整的 SourceMap，输出为独立文件。由于在 bundle 中添加了引用注释，所以开发工具知道在哪里去找到 SourceMap。</p>
-<h3 id="devServer"><a href="#devServer" class="headerlink" title="devServer:"></a>devServer:</h3><p>1、    基于webpack的静态服务：<br>2、    配置项：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment"># 告诉服务器从哪里提供内容。这只有在您想要提供静态文件时才需要。例如图片？？</span></span><br><span class="line">	contentBase：__dirname + <span class="string">'dist'</span>,</span><br><span class="line">    <span class="comment"># 告诉服务器观看由devServer.contentBase选项提供的文件。文件更改将触发整个页面重新加载。</span></span><br><span class="line">	watchContentBase: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment"># 随所有内容启用gzip压缩</span></span><br><span class="line">    compress: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment"># 模块的热加载，必须结合 HotModuleReplacementPlugin使用</span></span><br><span class="line">    hot: <span class="literal">true</span>,  </span><br><span class="line">    port: 9999,</span><br><span class="line">    host: <span class="string">'localhost'</span>,</span><br><span class="line">    <span class="comment"># 相当于gulp的middleware中间件拦截请求；</span></span><br><span class="line">    setup(app) &#123;</span><br><span class="line">        app.get(<span class="string">'/some/path'</span>, <span class="keyword">function</span>(req, res) &#123;</span><br><span class="line">            console.log(11)</span><br><span class="line">            res.json(&#123; custom: <span class="string">'response'</span> &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    proxy: &#123;</span><br><span class="line">        <span class="comment"># "/api": "http://localhost:3000/"</span></span><br><span class="line">        <span class="comment"># "/": "http://localhost:3000/"</span></span><br><span class="line">        <span class="string">"/api"</span>: &#123;</span><br><span class="line">            target: <span class="string">"http://localhost:3000"</span>,</span><br><span class="line">            pathRewrite: &#123;<span class="string">"^/api"</span> : <span class="string">""</span>&#125;,</span><br><span class="line">            secure: <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <h1 id="常见的xss攻击方法"><a href="#常见的xss攻击方法" class="headerlink" title="常见的xss攻击方法"></a>常见的xss攻击方法</h1><h2 id="1-绕过XSS-Filter"><a href="#1-绕过XSS-Filter" class="headerlink" title="1.绕过XSS-Filter"></a>1.绕过XSS-Filter</h2><p>利用&lt;&gt;标签注入Html/JavaScript代码。</p>
+<h2 id="2-利用HTML标签的属性值进行xss攻击"><a href="#2-利用HTML标签的属性值进行xss攻击" class="headerlink" title="2.利用HTML标签的属性值进行xss攻击"></a>2.利用HTML标签的属性值进行xss攻击</h2><a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"javascript:alert('xss')"</span>/&gt;;</span><br></pre></td></tr></table></figure>
+<p>（当然并不是所有的Web浏览器都支持Javascript伪协议，所以此类XSS攻击具有一定的局限性）。</p>
+<h2 id="3-空格、回车和Tab"><a href="#3-空格、回车和Tab" class="headerlink" title="3. 空格、回车和Tab"></a>3. 空格、回车和Tab</h2><p>如果XSS Filter仅仅将敏感的输入字符列入黑名单，比如javascript，用户可以利用空格、回车和Tab键来绕过过滤，<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"javas  cript:alert(/xss/);"</span>/&gt;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="4-利用事件来执行跨站脚本"><a href="#4-利用事件来执行跨站脚本" class="headerlink" title="4. 利用事件来执行跨站脚本"></a>4. 利用事件来执行跨站脚本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"#"</span> onerror=<span class="string">"alert(1)"</span>/&gt;;</span><br></pre></td></tr></table></figure>
+<p>当src错误的视乎就会执行onerror事件。</p>
+<h2 id="5-利用CSS跨站"><a href="#5-利用CSS跨站" class="headerlink" title="5. 利用CSS跨站"></a>5. 利用CSS跨站</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：Body &#123;backgrund-image: url(<span class="string">"javascript:alert('xss')"</span>)&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="6-扰乱过滤规则"><a href="#6-扰乱过滤规则" class="headerlink" title="6. 扰乱过滤规则"></a>6. 扰乱过滤规则</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"javaSCript: alert(/xss/);"</span>/&gt;;</span><br></pre></td></tr></table></figure>
+<h2 id="7-利用字符编码"><a href="#7-利用字符编码" class="headerlink" title="7.利用字符编码"></a>7.利用字符编码</h2><p>透过这种技巧，不仅能让XSS代码绕过服务端的过滤，还能更好地隐藏Shellcode；（JS支持unicode、eacapes、十六进制、十进制等编码形式）。</p>
+<h2 id="8-拆分跨站法"><a href="#8-拆分跨站法" class="headerlink" title="8.拆分跨站法"></a>8.拆分跨站法</h2><p>将xss攻击的代码拆分开来，适用于应用程序没有过滤 XSS关键字符（如<code>&lt;、&gt;</code>）却对输入字符长度有限制的情况下。</p>
+<h2 id="9-DOM型的XSS"><a href="#9-DOM型的XSS" class="headerlink" title="9.DOM型的XSS"></a>9.DOM型的XSS</h2><p>DOM型的XSS主要是由客户端的脚本通过DOM动态地输出数据到页面上，它不依赖于提交数据到服务器，而是从客户端获得DOM中的数据在本地执行。容易导致DOM型的XSS的输入源包括：<code>Document.URL</code>、<code>Location(.pathname|.href|.search|.hash)</code>、<code>Document.referrer</code>、<code>Window.name</code>、<code>Document.cookie</code>、<code>localStorage/globalStorage</code>；</p>
+<h1 id="XSS攻击防御"><a href="#XSS攻击防御" class="headerlink" title="XSS攻击防御"></a>XSS攻击防御</h1><p>　　原则：不相信客户输入的数据<br>　　注意:  攻击代码不一定在<script></script>中</p>
+<h2 id="1-使用XSS-Filter。"><a href="#1-使用XSS-Filter。" class="headerlink" title="1.使用XSS Filter。"></a>1.使用XSS Filter。</h2><p>输入过滤，对用户提交的数据进行有效性验证，仅接受指定长度范围内并符合我们期望格式的的内容提交，阻止或者忽略除此外的其他任何数据。比如：电话号码必须是数字和中划线组成，而且要设定长度上限。过滤一些些常见的敏感字符，例如：<code>&lt; &gt; &#39; &quot; &amp; # \ javascript expression  &quot;onclick=&quot;  &quot;onfocus&quot;</code>；过滤或移除特殊的Html标签，<br>例如: <code>&lt;script&gt;</code>, <code>&lt;iframe&gt;</code> ,  &lt; for &lt;, &gt; for &gt;, &quot; for；过滤JavaScript 事件的标签，例如 “onclick=”, “onfocus” 等等。<br>    输出编码，当需要将一个字符串输出到Web网页时，同时又不确定这个字符串中是否包括XSS特殊字符（如<code>&lt; &gt; &amp; &#39;&quot;</code>等），为了确保输出内容的完整性和正确性，可以使用编码（HTMLEncode）进行处理。</p>
+<h2 id="2-DOM型的XSS攻击防御"><a href="#2-DOM型的XSS攻击防御" class="headerlink" title="2.DOM型的XSS攻击防御"></a>2.DOM型的XSS攻击防御</h2><p>　　把变量输出到页面时要做好相关的编码转义工作，如要输出到 <code>&lt;script&gt;</code>中，可以进行JS编码；要输出到HTML内容或属性，则进行HTML编码处理。根据不同的语境采用不同的编码处理方式。</p>
+<h2 id="3-HttpOnly-Cookie"><a href="#3-HttpOnly-Cookie" class="headerlink" title="3.HttpOnly Cookie"></a>3.HttpOnly Cookie</h2><p>　　将重要的cookie标记为http only，这样的话当浏览器向Web服务器发起请求的时就会带上cookie字段，但是在脚本中却不能访问这个cookie，这样就避免了XSS攻击利用JavaScript的<code>document.cookie</code>获取cookie。</p>
 
       
     </div>
@@ -670,8 +668,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/20/一根油条的爱情/" rel="next" title="一根油条的爱情">
-                <i class="fa fa-chevron-left"></i> 一根油条的爱情
+              <a href="/2018/09/25/centos7中安装mysql的步骤/" rel="next" title="centos7中安装mysql的步骤">
+                <i class="fa fa-chevron-left"></i> centos7中安装mysql的步骤
               </a>
             
           </div>
@@ -679,10 +677,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/25/徙鸟/" rel="prev" title="徙鸟">
-                徙鸟 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -870,7 +864,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介："><span class="nav-number">1.</span> <span class="nav-text">简介：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装："><span class="nav-number">2.</span> <span class="nav-text">安装：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用："><span class="nav-number">3.</span> <span class="nav-text">使用：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件配置"><span class="nav-number">4.</span> <span class="nav-text">文件配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#入口文件属性："><span class="nav-number">4.1.</span> <span class="nav-text">入口文件属性：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串："><span class="nav-number">4.1.1.</span> <span class="nav-text">字符串：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对象语法："><span class="nav-number">4.1.2.</span> <span class="nav-text">对象语法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出文件属性："><span class="nav-number">4.2.</span> <span class="nav-text">输出文件属性：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载器："><span class="nav-number">4.3.</span> <span class="nav-text">加载器：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件："><span class="nav-number">4.4.</span> <span class="nav-text">插件：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#devtool"><span class="nav-number">4.5.</span> <span class="nav-text">devtool:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#devServer"><span class="nav-number">4.6.</span> <span class="nav-text">devServer:</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的xss攻击方法"><span class="nav-number">1.</span> <span class="nav-text">常见的xss攻击方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-绕过XSS-Filter"><span class="nav-number">1.1.</span> <span class="nav-text">1.绕过XSS-Filter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-利用HTML标签的属性值进行xss攻击"><span class="nav-number">1.2.</span> <span class="nav-text">2.利用HTML标签的属性值进行xss攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-空格、回车和Tab"><span class="nav-number">1.3.</span> <span class="nav-text">3. 空格、回车和Tab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-利用事件来执行跨站脚本"><span class="nav-number">1.4.</span> <span class="nav-text">4. 利用事件来执行跨站脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-利用CSS跨站"><span class="nav-number">1.5.</span> <span class="nav-text">5. 利用CSS跨站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-扰乱过滤规则"><span class="nav-number">1.6.</span> <span class="nav-text">6. 扰乱过滤规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-利用字符编码"><span class="nav-number">1.7.</span> <span class="nav-text">7.利用字符编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-拆分跨站法"><span class="nav-number">1.8.</span> <span class="nav-text">8.拆分跨站法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-DOM型的XSS"><span class="nav-number">1.9.</span> <span class="nav-text">9.DOM型的XSS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS攻击防御"><span class="nav-number">2.</span> <span class="nav-text">XSS攻击防御</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-使用XSS-Filter。"><span class="nav-number">2.1.</span> <span class="nav-text">1.使用XSS Filter。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-DOM型的XSS攻击防御"><span class="nav-number">2.2.</span> <span class="nav-text">2.DOM型的XSS攻击防御</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-HttpOnly-Cookie"><span class="nav-number">2.3.</span> <span class="nav-text">3.HttpOnly Cookie</span></a></li></ol></li></ol></div>
             
 
           </div>
