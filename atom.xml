@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-04-17T10:03:53.589Z</updated>
+  <updated>2019-07-08T08:08:56.483Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>你不知道的.toLocaleString()</title>
+    <link href="http://yoursite.com/2019/07/08/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84-toLocaleString/"/>
+    <id>http://yoursite.com/2019/07/08/你不知道的-toLocaleString/</id>
+    <published>2019-07-08T07:51:58.697Z</published>
+    <updated>2019-07-08T08:08:56.483Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="使用-toLocaleString-轻松实现多国语言价格数字格式化"><a href="#使用-toLocaleString-轻松实现多国语言价格数字格式化" class="headerlink" title="使用 .toLocaleString() 轻松实现多国语言价格数字格式化"></a>使用 .toLocaleString() 轻松实现多国语言价格数字格式化</h2><p>用代码对数字进行格式化，显然不是逢三位加逗号这么简单。比如印度在数字分位符号上的处理，就堪称业界奇葩：</p><p><code>印度的数字读法用“拉克”（十万）和“克若尔”（千万），数字标法用不对称的数位分离，即小数点左侧首先是三位分隔，然后继续向左都是两位分隔。如：三千万（3 克若尔）会写成 3,00,00,000。 —— 维基百科</code></p><p>简单的暴利处理无法满足多语言支持，此时使用 Number.prototype.toLocaleString() 进行数字格式化处理再好不过。<br><a id="more"></a></p><h3 id="使用-toLocaleString"><a href="#使用-toLocaleString" class="headerlink" title="使用 .toLocaleString()"></a>使用 .toLocaleString()</h3><p>在 JavaScript 中，数字对象的 .toLocaleString() 方法如果不传参数，则采用宿主环境的系统语言进行分位处理。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">1024</span>;</span><br><span class="line">price.toLocaleString(); <span class="comment">// =&gt; "1,024"</span></span><br></pre></td></tr></table></figure></p><h3 id="使用-locales-参数"><a href="#使用-locales-参数" class="headerlink" title="使用 locales 参数"></a>使用 locales 参数</h3><p>在 ECMA-402 标准的实现中，增加了.toLocaleString() 方法对 locales 的支持，语法为 numObj.toLocaleString([locales [, options]])，locales 参数接收 BCP 47 语言标签格式的字符串或数组。(HTML Language Code Reference,  ISO Language Code Table)</p><p>那么将数字强制转化为印度格式就变的简单：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">1669999</span>;</span><br><span class="line">price.toLocaleString(<span class="string">'en-IN'</span>); <span class="comment">// =&gt; "16,69,999"</span></span><br></pre></td></tr></table></figure></p><p>这样就可以轻松处理多语言的自动格式化了，只要根据 <html lang="en-IN"> 中的 lang属性动态读取就可以了。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">1669999</span>;</span><br><span class="line"><span class="keyword">var</span> lang = <span class="built_in">document</span>.querySelector(<span class="string">'html'</span>).getAttribute(<span class="string">'lang'</span>);</span><br><span class="line">price.toLocaleString(lang); <span class="comment">// 中文页面下 =&gt; "1,669,999"</span></span><br></pre></td></tr></table></figure></html></p><h3 id="使用-options-参数"><a href="#使用-options-参数" class="headerlink" title="使用 options 参数"></a>使用 options 参数</h3><p>如果仅仅是做到多语言自动格式化数字，显然还不够细腻。通过 .toLocaleString() 方法的 options 参数，可以做到转化至相应语言的货币格式。</p><p>在我的项目之前的实现中，多国语言的货币符号是通过模板渲染时读取配置文件完成转换的。如果使用.toLocaleString()  展示或加工展示所有货币数字，则无需这一步骤：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">2499</span>;</span><br><span class="line">price.toLocaleString(<span class="string">'en-IN'</span>, &#123;</span><br><span class="line">  style: <span class="string">'currency'</span>,</span><br><span class="line">  currency: <span class="string">'INR'</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// =&gt; "₹ 2,499.00"</span></span><br></pre></td></tr></table></figure></p><p>如果不想要显示末尾的小数「.00」，只要设置一下最小分位 minimumFractionDigits 即可（默认是 2）：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">2499</span>;</span><br><span class="line">price.toLocaleString(<span class="string">'en-IN'</span>, &#123;</span><br><span class="line">  style: <span class="string">'currency'</span>,</span><br><span class="line">  currency: <span class="string">'INR'</span>,</span><br><span class="line">  minimumFractionDigits: <span class="number">0</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// =&gt; "₹ 2,499"</span></span><br></pre></td></tr></table></figure></p><p>这样一个完美的价格格式化功能就完成了。options 对象参数接收一系列样式属性，常用的有：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">style：可选值为 decimal（小数）、currency（货币）或 percent（百分比）；</span><br><span class="line">currency：设置为货币样式时使用的符号；</span><br><span class="line">minimumFractionDigits：最少保留小数的位数；</span><br><span class="line">maximumFractionDigits：最多保留小数的位数；</span><br><span class="line">useGrouping：布尔值，是否显示数字分位。</span><br></pre></td></tr></table></figure></p><p><em>注意：currency设置为货币样式时使用的符号，支持列表在<a href="https://www.currency-iso.org/en/home/tables/table-a1.html" target="_blank" rel="noopener">这里</a>。</em><br>关于 locales 参数和 options 参数支持的其它属性，例如上面使用的 minimumFractionDigits，可以查阅 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString" target="_blank" rel="noopener">MDN</a>，我刚把最新的英文版翻译了一遍。</p><h2 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h2><p>所有现代浏览器都支持 locales 参数，因此在移动端使用是安全无痛的。桌面端的支持则是 IE11 及以上。</p><p>另外，如果想在后端直接对不同页面直接输出对应的货币符或者做分位转换等操作，只要用 node.js 做一个转换就行了。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;使用-toLocaleString-轻松实现多国语言价格数字格式化&quot;&gt;&lt;a href=&quot;#使用-toLocaleString-轻松实现多国语言价格数字格式化&quot; class=&quot;headerlink&quot; title=&quot;使用 .toLocaleString() 轻松实现多国语言价格数字格式化&quot;&gt;&lt;/a&gt;使用 .toLocaleString() 轻松实现多国语言价格数字格式化&lt;/h2&gt;&lt;p&gt;用代码对数字进行格式化，显然不是逢三位加逗号这么简单。比如印度在数字分位符号上的处理，就堪称业界奇葩：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;印度的数字读法用“拉克”（十万）和“克若尔”（千万），数字标法用不对称的数位分离，即小数点左侧首先是三位分隔，然后继续向左都是两位分隔。如：三千万（3 克若尔）会写成 3,00,00,000。 —— 维基百科&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;简单的暴利处理无法满足多语言支持，此时使用 Number.prototype.toLocaleString() 进行数字格式化处理再好不过。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="前端" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="Javascript" scheme="http://yoursite.com/tags/Javascript/"/>
+    
+  </entry>
   
   <entry>
     <title>Javascript面试中经常被问到的三个问题</title>

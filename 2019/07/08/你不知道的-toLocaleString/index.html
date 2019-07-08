@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Javascript," />
 
 
 
@@ -81,17 +81,18 @@
 
 
 
-<meta name="description" content="傻子与白痴">
-<meta property="og:type" content="website">
-<meta property="og:title" content="August&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+<meta name="description" content="使用 .toLocaleString() 轻松实现多国语言价格数字格式化用代码对数字进行格式化，显然不是逢三位加逗号这么简单。比如印度在数字分位符号上的处理，就堪称业界奇葩： 印度的数字读法用“拉克”（十万）和“克若尔”（千万），数字标法用不对称的数位分离，即小数点左侧首先是三位分隔，然后继续向左都是两位分隔。如：三千万（3 克若尔）会写成 3,00,00,000。 —— 维基百科 简单的暴利处理">
+<meta name="keywords" content="Javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你不知道的.toLocaleString()">
+<meta property="og:url" content="http://yoursite.com/2019/07/08/你不知道的-toLocaleString/index.html">
 <meta property="og:site_name" content="August&#39;s Blog">
-<meta property="og:description" content="傻子与白痴">
+<meta property="og:description" content="使用 .toLocaleString() 轻松实现多国语言价格数字格式化用代码对数字进行格式化，显然不是逢三位加逗号这么简单。比如印度在数字分位符号上的处理，就堪称业界奇葩： 印度的数字读法用“拉克”（十万）和“克若尔”（千万），数字标法用不对称的数位分离，即小数点左侧首先是三位分隔，然后继续向左都是两位分隔。如：三千万（3 克若尔）会写成 3,00,00,000。 —— 维基百科 简单的暴利处理">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-21T08:47:19.856Z">
+<meta property="og:updated_time" content="2019-07-08T08:08:56.483Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="August&#39;s Blog">
-<meta name="twitter:description" content="傻子与白痴">
+<meta name="twitter:title" content="你不知道的.toLocaleString()">
+<meta name="twitter:description" content="使用 .toLocaleString() 轻松实现多国语言价格数字格式化用代码对数字进行格式化，显然不是逢三位加逗号这么简单。比如印度在数字分位符号上的处理，就堪称业界奇葩： 印度的数字读法用“拉克”（十万）和“克若尔”（千万），数字标法用不对称的数位分离，即小数点左侧首先是三位分隔，然后继续向左都是两位分隔。如：三千万（3 克若尔）会写成 3,00,00,000。 —— 维基百科 简单的暴利处理">
 
 
 
@@ -121,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/07/08/你不知道的-toLocaleString/"/>
 
 
 
@@ -129,7 +130,7 @@
 
 <!-- 网页加载条 -->
 <script src="https://neveryu.github.io/js/src/pace.min.js"></script>
-  <title>分类 | August's Blog</title>
+  <title>你不知道的.toLocaleString() | August's Blog</title>
   
 
 
@@ -449,45 +450,244 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/你不知道的-toLocaleString/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="August">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="August's Blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline"></h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="category-all-page">
-            <div class="category-all-title">
-                目前共计 3 个分类
+          <h1 class="post-title" itemprop="name headline">你不知道的.toLocaleString()</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-08T15:51:58+08:00">
+                2019-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 热度
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>℃
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  807 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3 分钟
+                </span>
+              
             </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/HEXO/">HEXO</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/美文/">美文</a><span class="category-list-count">2</span></li></ul>
-            </div>
-            <blockquote class="blockquote-center">
-                人生最难的就是在热爱和生计之间做选择<br>
-                愿每个人这一生<br>
-                既对得起梦想又担得起生活的责任
-            </blockquote>
-          </div>
-        
-      </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h2 id="使用-toLocaleString-轻松实现多国语言价格数字格式化"><a href="#使用-toLocaleString-轻松实现多国语言价格数字格式化" class="headerlink" title="使用 .toLocaleString() 轻松实现多国语言价格数字格式化"></a>使用 .toLocaleString() 轻松实现多国语言价格数字格式化</h2><p>用代码对数字进行格式化，显然不是逢三位加逗号这么简单。比如印度在数字分位符号上的处理，就堪称业界奇葩：</p>
+<p><code>印度的数字读法用“拉克”（十万）和“克若尔”（千万），数字标法用不对称的数位分离，即小数点左侧首先是三位分隔，然后继续向左都是两位分隔。如：三千万（3 克若尔）会写成 3,00,00,000。 —— 维基百科</code></p>
+<p>简单的暴利处理无法满足多语言支持，此时使用 Number.prototype.toLocaleString() 进行数字格式化处理再好不过。<br><a id="more"></a></p>
+<h3 id="使用-toLocaleString"><a href="#使用-toLocaleString" class="headerlink" title="使用 .toLocaleString()"></a>使用 .toLocaleString()</h3><p>在 JavaScript 中，数字对象的 .toLocaleString() 方法如果不传参数，则采用宿主环境的系统语言进行分位处理。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">1024</span>;</span><br><span class="line">price.toLocaleString(); <span class="comment">// =&gt; "1,024"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="使用-locales-参数"><a href="#使用-locales-参数" class="headerlink" title="使用 locales 参数"></a>使用 locales 参数</h3><p>在 ECMA-402 标准的实现中，增加了.toLocaleString() 方法对 locales 的支持，语法为 numObj.toLocaleString([locales [, options]])，locales 参数接收 BCP 47 语言标签格式的字符串或数组。(HTML Language Code Reference,  ISO Language Code Table)</p>
+<p>那么将数字强制转化为印度格式就变的简单：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">1669999</span>;</span><br><span class="line">price.toLocaleString(<span class="string">'en-IN'</span>); <span class="comment">// =&gt; "16,69,999"</span></span><br></pre></td></tr></table></figure></p>
+<p>这样就可以轻松处理多语言的自动格式化了，只要根据 <html lang="en-IN"> 中的 lang属性动态读取就可以了。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">1669999</span>;</span><br><span class="line"><span class="keyword">var</span> lang = <span class="built_in">document</span>.querySelector(<span class="string">'html'</span>).getAttribute(<span class="string">'lang'</span>);</span><br><span class="line">price.toLocaleString(lang); <span class="comment">// 中文页面下 =&gt; "1,669,999"</span></span><br></pre></td></tr></table></figure></html></p>
+<h3 id="使用-options-参数"><a href="#使用-options-参数" class="headerlink" title="使用 options 参数"></a>使用 options 参数</h3><p>如果仅仅是做到多语言自动格式化数字，显然还不够细腻。通过 .toLocaleString() 方法的 options 参数，可以做到转化至相应语言的货币格式。</p>
+<p>在我的项目之前的实现中，多国语言的货币符号是通过模板渲染时读取配置文件完成转换的。如果使用.toLocaleString()  展示或加工展示所有货币数字，则无需这一步骤：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">2499</span>;</span><br><span class="line">price.toLocaleString(<span class="string">'en-IN'</span>, &#123;</span><br><span class="line">  style: <span class="string">'currency'</span>,</span><br><span class="line">  currency: <span class="string">'INR'</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// =&gt; "₹ 2,499.00"</span></span><br></pre></td></tr></table></figure></p>
+<p>如果不想要显示末尾的小数「.00」，只要设置一下最小分位 minimumFractionDigits 即可（默认是 2）：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">2499</span>;</span><br><span class="line">price.toLocaleString(<span class="string">'en-IN'</span>, &#123;</span><br><span class="line">  style: <span class="string">'currency'</span>,</span><br><span class="line">  currency: <span class="string">'INR'</span>,</span><br><span class="line">  minimumFractionDigits: <span class="number">0</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// =&gt; "₹ 2,499"</span></span><br></pre></td></tr></table></figure></p>
+<p>这样一个完美的价格格式化功能就完成了。options 对象参数接收一系列样式属性，常用的有：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">style：可选值为 decimal（小数）、currency（货币）或 percent（百分比）；</span><br><span class="line">currency：设置为货币样式时使用的符号；</span><br><span class="line">minimumFractionDigits：最少保留小数的位数；</span><br><span class="line">maximumFractionDigits：最多保留小数的位数；</span><br><span class="line">useGrouping：布尔值，是否显示数字分位。</span><br></pre></td></tr></table></figure></p>
+<p><em>注意：currency设置为货币样式时使用的符号，支持列表在<a href="https://www.currency-iso.org/en/home/tables/table-a1.html" target="_blank" rel="noopener">这里</a>。</em><br>关于 locales 参数和 options 参数支持的其它属性，例如上面使用的 minimumFractionDigits，可以查阅 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString" target="_blank" rel="noopener">MDN</a>，我刚把最新的英文版翻译了一遍。</p>
+<h2 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h2><p>所有现代浏览器都支持 locales 参数，因此在移动端使用是安全无痛的。桌面端的支持则是 IE11 及以上。</p>
+<p>另外，如果想在后端直接对不同页面直接输出对应的货币符或者做分位转换等操作，只要用 node.js 做一个转换就行了。</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>码字不易，感恩欣赏~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wx.png" alt="August 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/zfb.png" alt="August 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Javascript/" rel="tag"># Javascript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/17/Javascript面试中经常被问到的三个问题/" rel="next" title="Javascript面试中经常被问到的三个问题">
+                <i class="fa fa-chevron-left"></i> Javascript面试中经常被问到的三个问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -525,8 +725,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -637,6 +846,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-toLocaleString-轻松实现多国语言价格数字格式化"><span class="nav-number">1.</span> <span class="nav-text">使用 .toLocaleString() 轻松实现多国语言价格数字格式化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-toLocaleString"><span class="nav-number">1.1.</span> <span class="nav-text">使用 .toLocaleString()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-locales-参数"><span class="nav-number">1.2.</span> <span class="nav-text">使用 locales 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-options-参数"><span class="nav-number">1.3.</span> <span class="nav-text">使用 options 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#兼容性"><span class="nav-number">2.</span> <span class="nav-text">兼容性</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
