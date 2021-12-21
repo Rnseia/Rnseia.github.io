@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon-32x32-next.png?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Javascript,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Ren's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="常见的 xss 攻击方法1.绕过 XSS-Filter利用&amp;lt;&amp;gt;标签注入 Html/JavaScript 代码。 2.利用 HTML 标签的属性值进行 xss 攻击">
+<meta name="keywords" content="Javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于XSS攻击">
+<meta property="og:url" content="http://yoursite.com/2018/09/29/关于XSS攻击/index.html">
+<meta property="og:site_name" content="Ren&#39;s Blog">
+<meta property="og:description" content="常见的 xss 攻击方法1.绕过 XSS-Filter利用&amp;lt;&amp;gt;标签注入 Html/JavaScript 代码。 2.利用 HTML 标签的属性值进行 xss 攻击">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-12-21T06:02:50.499Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于XSS攻击">
+<meta name="twitter:description" content="常见的 xss 攻击方法1.绕过 XSS-Filter利用&amp;lt;&amp;gt;标签注入 Html/JavaScript 代码。 2.利用 HTML 标签的属性值进行 xss 攻击">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/29/关于XSS攻击/">
+
+
+
+
+
+<!-- 网页加载条 -->
+<script src="https://neveryu.github.io/js/src/pace.min.js"></script>
+  <title>关于XSS攻击 | Ren's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ren's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">时间仍在，是我们在飞逝</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+
+  
+</ul></nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/29/关于XSS攻击/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ren">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ren's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于XSS攻击</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-29T17:28:09+08:00">
+                2018-09-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 热度
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>℃
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  830 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="常见的-xss-攻击方法"><a href="#常见的-xss-攻击方法" class="headerlink" title="常见的 xss 攻击方法"></a>常见的 xss 攻击方法</h1><h2 id="1-绕过-XSS-Filter"><a href="#1-绕过-XSS-Filter" class="headerlink" title="1.绕过 XSS-Filter"></a>1.绕过 XSS-Filter</h2><p>利用&lt;&gt;标签注入 Html/JavaScript 代码。</p>
+<h2 id="2-利用-HTML-标签的属性值进行-xss-攻击"><a href="#2-利用-HTML-标签的属性值进行-xss-攻击" class="headerlink" title="2.利用 HTML 标签的属性值进行 xss 攻击"></a>2.利用 HTML 标签的属性值进行 xss 攻击</h2><a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"javascript:alert('xss')"</span>/&gt;;</span><br></pre></td></tr></table></figure>
+<p>（当然并不是所有的 Web 浏览器都支持 Javascript 伪协议，所以此类 XSS 攻击具有一定的局限性）。</p>
+<h2 id="3-空格、回车和-Tab"><a href="#3-空格、回车和-Tab" class="headerlink" title="3. 空格、回车和 Tab"></a>3. 空格、回车和 Tab</h2><p>如果 XSS Filter 仅仅将敏感的输入字符列入黑名单，比如 javascript，用户可以利用空格、回车和 Tab 键来绕过过滤，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"javas  cript:alert(/xss/);"</span>/&gt;;</span><br></pre></td></tr></table></figure>
+<h2 id="4-利用事件来执行跨站脚本"><a href="#4-利用事件来执行跨站脚本" class="headerlink" title="4. 利用事件来执行跨站脚本"></a>4. 利用事件来执行跨站脚本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"#"</span> onerror=<span class="string">"alert(1)"</span>/&gt;;</span><br></pre></td></tr></table></figure>
+<p>当 src 错误的视乎就会执行 onerror 事件。</p>
+<h2 id="5-利用-CSS-跨站"><a href="#5-利用-CSS-跨站" class="headerlink" title="5. 利用 CSS 跨站"></a>5. 利用 CSS 跨站</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：Body &#123;backgrund-image: url(<span class="string">"javascript:alert('xss')"</span>)&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="6-扰乱过滤规则"><a href="#6-扰乱过滤规则" class="headerlink" title="6. 扰乱过滤规则"></a>6. 扰乱过滤规则</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例如：&lt;img src=<span class="string">"javaSCript: alert(/xss/);"</span>/&gt;;</span><br></pre></td></tr></table></figure>
+<h2 id="7-利用字符编码"><a href="#7-利用字符编码" class="headerlink" title="7.利用字符编码"></a>7.利用字符编码</h2><p>透过这种技巧，不仅能让 XSS 代码绕过服务端的过滤，还能更好地隐藏 Shellcode；（JS 支持 unicode、eacapes、十六进制、十进制等编码形式）。</p>
+<h2 id="8-拆分跨站法"><a href="#8-拆分跨站法" class="headerlink" title="8.拆分跨站法"></a>8.拆分跨站法</h2><p>将 xss 攻击的代码拆分开来，适用于应用程序没有过滤 XSS 关键字符（如<code>&lt;、&gt;</code>）却对输入字符长度有限制的情况下。</p>
+<h2 id="9-DOM-型的-XSS"><a href="#9-DOM-型的-XSS" class="headerlink" title="9.DOM 型的 XSS"></a>9.DOM 型的 XSS</h2><p>DOM 型的 XSS 主要是由客户端的脚本通过 DOM 动态地输出数据到页面上，它不依赖于提交数据到服务器，而是从客户端获得 DOM 中的数据在本地执行。容易导致 DOM 型的 XSS 的输入源包括：<code>Document.URL</code>、<code>Location(.pathname|.href|.search|.hash)</code>、<code>Document.referrer</code>、<code>Window.name</code>、<code>Document.cookie</code>、<code>localStorage/globalStorage</code>；</p>
+<h1 id="XSS-攻击防御"><a href="#XSS-攻击防御" class="headerlink" title="XSS 攻击防御"></a>XSS 攻击防御</h1><p>原则：不相信客户输入的数据<br>　　注意: 攻击代码不一定在<code>&lt;script&gt;&lt;/script&gt;</code>中</p>
+<h2 id="1-使用-XSS-Filter。"><a href="#1-使用-XSS-Filter。" class="headerlink" title="1.使用 XSS Filter。"></a>1.使用 XSS Filter。</h2><p>输入过滤，对用户提交的数据进行有效性验证，仅接受指定长度范围内并符合我们期望格式的的内容提交，阻止或者忽略除此外的其他任何数据。比如：电话号码必须是数字和中划线组成，而且要设定长度上限。过滤一些些常见的敏感字符，例如：<code>&lt; &gt; &#39; &quot; &amp; # \ javascript expression &quot;onclick=&quot; &quot;onfocus&quot;</code>；过滤或移除特殊的 Html 标签，<br>例如: <code>&lt;script&gt;</code>, <code>&lt;iframe&gt;</code> , &lt; for &lt;, &gt; for &gt;, &quot; for；过滤 JavaScript 事件的标签，例如 “onclick=”, “onfocus” 等等。<br>输出编码，当需要将一个字符串输出到 Web 网页时，同时又不确定这个字符串中是否包括 XSS 特殊字符（如<code>&lt; &gt; &amp; &#39;&quot;</code>等），为了确保输出内容的完整性和正确性，可以使用编码（HTMLEncode）进行处理。</p>
+<h2 id="2-DOM-型的-XSS-攻击防御"><a href="#2-DOM-型的-XSS-攻击防御" class="headerlink" title="2.DOM 型的 XSS 攻击防御"></a>2.DOM 型的 XSS 攻击防御</h2><p>把变量输出到页面时要做好相关的编码转义工作，如要输出到 <code>&lt;script&gt;</code>中，可以进行 JS 编码；要输出到 HTML 内容或属性，则进行 HTML 编码处理。根据不同的语境采用不同的编码处理方式。</p>
+<h2 id="3-HttpOnly-Cookie"><a href="#3-HttpOnly-Cookie" class="headerlink" title="3.HttpOnly Cookie"></a>3.HttpOnly Cookie</h2><p>将重要的 cookie 标记为 http only，这样的话当浏览器向 Web 服务器发起请求的时就会带上 cookie 字段，但是在脚本中却不能访问这个 cookie，这样就避免了 XSS 攻击利用 JavaScript 的<code>document.cookie</code>获取 cookie。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>码字不易，感恩欣赏~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wx.png" alt="Ren 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/zfb.png" alt="Ren 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Javascript/" rel="tag"># Javascript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/25/centos7中安装mysql的步骤/" rel="next" title="centos7中安装mysql的步骤">
+                <i class="fa fa-chevron-left"></i> centos7中安装mysql的步骤
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/10/如何解决内存泄漏引发的血案/" rel="prev" title="【转】如何解决内存泄漏引发的血案">
+                【转】如何解决内存泄漏引发的血案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="Ren">
+            
+              <p class="site-author-name" itemprop="name">Ren</p>
+              <p class="site-description motion-element" itemprop="description">不懂交互的前端不是好全栈</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Rnseia" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/u/1764086711?is_all=1" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons">
+              </a>
+            </div>
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://hexo.io/zh-cn/" title="Hexo文档" target="_blank">Hexo文档</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://theme-next.iissnan.com/" title="NexT文档" target="_blank">NexT文档</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的-xss-攻击方法"><span class="nav-number">1.</span> <span class="nav-text">常见的 xss 攻击方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-绕过-XSS-Filter"><span class="nav-number">1.1.</span> <span class="nav-text">1.绕过 XSS-Filter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-利用-HTML-标签的属性值进行-xss-攻击"><span class="nav-number">1.2.</span> <span class="nav-text">2.利用 HTML 标签的属性值进行 xss 攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-空格、回车和-Tab"><span class="nav-number">1.3.</span> <span class="nav-text">3. 空格、回车和 Tab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-利用事件来执行跨站脚本"><span class="nav-number">1.4.</span> <span class="nav-text">4. 利用事件来执行跨站脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-利用-CSS-跨站"><span class="nav-number">1.5.</span> <span class="nav-text">5. 利用 CSS 跨站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-扰乱过滤规则"><span class="nav-number">1.6.</span> <span class="nav-text">6. 扰乱过滤规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-利用字符编码"><span class="nav-number">1.7.</span> <span class="nav-text">7.利用字符编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-拆分跨站法"><span class="nav-number">1.8.</span> <span class="nav-text">8.拆分跨站法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-DOM-型的-XSS"><span class="nav-number">1.9.</span> <span class="nav-text">9.DOM 型的 XSS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS-攻击防御"><span class="nav-number">2.</span> <span class="nav-text">XSS 攻击防御</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-使用-XSS-Filter。"><span class="nav-number">2.1.</span> <span class="nav-text">1.使用 XSS Filter。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-DOM-型的-XSS-攻击防御"><span class="nav-number">2.2.</span> <span class="nav-text">2.DOM 型的 XSS 攻击防御</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-HttpOnly-Cookie"><span class="nav-number">2.3.</span> <span class="nav-text">3.HttpOnly Cookie</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ren</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">16.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+ 
+    <span id="busuanzi_container_site_uv">
+        <br>您是第
+        <span id="busuanzi_value_site_uv"></span>
+        个小伙伴
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站总浏览
+        <span id="busuanzi_value_site_pv"></span>
+        次
+    </span>
+ 
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+    <span class="site-pv">
+      
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<!-- 背景动画 -->
+<script type="text/javascript" src="/js/src/particle.js"></script>
+
+</body>
+</html>

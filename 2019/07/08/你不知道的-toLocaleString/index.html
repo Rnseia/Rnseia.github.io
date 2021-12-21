@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon-32x32-next.png?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Javascript,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Ren's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="使用 .toLocaleString() 轻松实现多国语言价格数字格式化用代码对数字进行格式化，显然不是逢三位加逗号这么简单。比如印度在数字分位符号上的处理，就堪称业界奇葩： 印度的数字读法用“拉克”（十万）和“克若尔”（千万），数字标法用不对称的数位分离，即小数点左侧首先是三位分隔，然后继续向左都是两位分隔。如：三千万（3 克若尔）会写成 3,00,00,000。 —— 维基百科 简单的暴利处理">
+<meta name="keywords" content="Javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你不知道的.toLocaleString()">
+<meta property="og:url" content="http://yoursite.com/2019/07/08/你不知道的-toLocaleString/index.html">
+<meta property="og:site_name" content="Ren&#39;s Blog">
+<meta property="og:description" content="使用 .toLocaleString() 轻松实现多国语言价格数字格式化用代码对数字进行格式化，显然不是逢三位加逗号这么简单。比如印度在数字分位符号上的处理，就堪称业界奇葩： 印度的数字读法用“拉克”（十万）和“克若尔”（千万），数字标法用不对称的数位分离，即小数点左侧首先是三位分隔，然后继续向左都是两位分隔。如：三千万（3 克若尔）会写成 3,00,00,000。 —— 维基百科 简单的暴利处理">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-12-21T06:03:33.550Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你不知道的.toLocaleString()">
+<meta name="twitter:description" content="使用 .toLocaleString() 轻松实现多国语言价格数字格式化用代码对数字进行格式化，显然不是逢三位加逗号这么简单。比如印度在数字分位符号上的处理，就堪称业界奇葩： 印度的数字读法用“拉克”（十万）和“克若尔”（千万），数字标法用不对称的数位分离，即小数点左侧首先是三位分隔，然后继续向左都是两位分隔。如：三千万（3 克若尔）会写成 3,00,00,000。 —— 维基百科 简单的暴利处理">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/08/你不知道的-toLocaleString/">
+
+
+
+
+
+<!-- 网页加载条 -->
+<script src="https://neveryu.github.io/js/src/pace.min.js"></script>
+  <title>你不知道的.toLocaleString() | Ren's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ren's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">时间仍在，是我们在飞逝</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+
+  
+</ul></nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/你不知道的-toLocaleString/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ren">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ren's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">你不知道的.toLocaleString()</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-08T16:10:19+08:00">
+                2019-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 热度
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>℃
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  807 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="使用-toLocaleString-轻松实现多国语言价格数字格式化"><a href="#使用-toLocaleString-轻松实现多国语言价格数字格式化" class="headerlink" title="使用 .toLocaleString() 轻松实现多国语言价格数字格式化"></a>使用 .toLocaleString() 轻松实现多国语言价格数字格式化</h2><p>用代码对数字进行格式化，显然不是逢三位加逗号这么简单。比如印度在数字分位符号上的处理，就堪称业界奇葩：</p>
+<p><code>印度的数字读法用“拉克”（十万）和“克若尔”（千万），数字标法用不对称的数位分离，即小数点左侧首先是三位分隔，然后继续向左都是两位分隔。如：三千万（3 克若尔）会写成 3,00,00,000。 —— 维基百科</code></p>
+<p>简单的暴利处理无法满足多语言支持，此时使用 Number.prototype.toLocaleString() 进行数字格式化处理再好不过。</p>
+<a id="more"></a>
+<h3 id="使用-toLocaleString"><a href="#使用-toLocaleString" class="headerlink" title="使用 .toLocaleString()"></a>使用 .toLocaleString()</h3><p>在 JavaScript 中，数字对象的 .toLocaleString() 方法如果不传参数，则采用宿主环境的系统语言进行分位处理。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">1024</span>;</span><br><span class="line">price.toLocaleString(); <span class="comment">// =&gt; "1,024"</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用-locales-参数"><a href="#使用-locales-参数" class="headerlink" title="使用 locales 参数"></a>使用 locales 参数</h3><p>在 ECMA-402 标准的实现中，增加了.toLocaleString() 方法对 locales 的支持，语法为 numObj.toLocaleString([locales [, options]])，locales 参数接收 BCP 47 语言标签格式的字符串或数组。(HTML Language Code Reference, ISO Language Code Table)</p>
+<p>那么将数字强制转化为印度格式就变的简单：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">1669999</span>;</span><br><span class="line">price.toLocaleString(<span class="string">"en-IN"</span>); <span class="comment">// =&gt; "16,69,999"</span></span><br></pre></td></tr></table></figure>
+<p>这样就可以轻松处理多语言的自动格式化了，只要根据 <html lang="en-IN"> 中的 lang 属性动态读取就可以了。</html></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">1669999</span>;</span><br><span class="line"><span class="keyword">var</span> lang = <span class="built_in">document</span>.querySelector(<span class="string">"html"</span>).getAttribute(<span class="string">"lang"</span>);</span><br><span class="line">price.toLocaleString(lang); <span class="comment">// 中文页面下 =&gt; "1,669,999"</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用-options-参数"><a href="#使用-options-参数" class="headerlink" title="使用 options 参数"></a>使用 options 参数</h3><p>如果仅仅是做到多语言自动格式化数字，显然还不够细腻。通过 .toLocaleString() 方法的 options 参数，可以做到转化至相应语言的货币格式。</p>
+<p>在我的项目之前的实现中，多国语言的货币符号是通过模板渲染时读取配置文件完成转换的。如果使用.toLocaleString() 展示或加工展示所有货币数字，则无需这一步骤：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">2499</span>;</span><br><span class="line">price.toLocaleString(<span class="string">"en-IN"</span>, &#123;</span><br><span class="line">  style: <span class="string">"currency"</span>,</span><br><span class="line">  currency: <span class="string">"INR"</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// =&gt; "₹ 2,499.00"</span></span><br></pre></td></tr></table></figure>
+<p>如果不想要显示末尾的小数「.00」，只要设置一下最小分位 minimumFractionDigits 即可（默认是 2）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">2499</span>;</span><br><span class="line">price.toLocaleString(<span class="string">"en-IN"</span>, &#123;</span><br><span class="line">  style: <span class="string">"currency"</span>,</span><br><span class="line">  currency: <span class="string">"INR"</span>,</span><br><span class="line">  minimumFractionDigits: <span class="number">0</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// =&gt; "₹ 2,499"</span></span><br></pre></td></tr></table></figure>
+<p>这样一个完美的价格格式化功能就完成了。options 对象参数接收一系列样式属性，常用的有：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">style：可选值为 decimal（小数）、currency（货币）或 percent（百分比）；</span><br><span class="line">currency：设置为货币样式时使用的符号；</span><br><span class="line">minimumFractionDigits：最少保留小数的位数；</span><br><span class="line">maximumFractionDigits：最多保留小数的位数；</span><br><span class="line">useGrouping：布尔值，是否显示数字分位。</span><br></pre></td></tr></table></figure>
+<p><em>注意：currency 设置为货币样式时使用的符号，支持列表在<a href="https://www.currency-iso.org/en/home/tables/table-a1.html" target="_blank" rel="noopener">这里</a>。</em><br>关于 locales 参数和 options 参数支持的其它属性，例如上面使用的 minimumFractionDigits，可以查阅 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString" target="_blank" rel="noopener">MDN</a>，我刚把最新的英文版翻译了一遍。</p>
+<h2 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h2><p>所有现代浏览器都支持 locales 参数，因此在移动端使用是安全无痛的。桌面端的支持则是 IE11 及以上。</p>
+<p>另外，如果想在后端直接对不同页面直接输出对应的货币符或者做分位转换等操作，只要用 node.js 做一个转换就行了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>码字不易，感恩欣赏~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wx.png" alt="Ren 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/zfb.png" alt="Ren 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Javascript/" rel="tag"># Javascript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/17/Javascript面试中经常被问到的三个问题/" rel="next" title="Javascript面试中经常被问到的三个问题">
+                <i class="fa fa-chevron-left"></i> Javascript面试中经常被问到的三个问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/29/Vue-Typescript-项目起手式/" rel="prev" title="Vue+Typescript 项目起手式">
+                Vue+Typescript 项目起手式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="Ren">
+            
+              <p class="site-author-name" itemprop="name">Ren</p>
+              <p class="site-description motion-element" itemprop="description">不懂交互的前端不是好全栈</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Rnseia" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/u/1764086711?is_all=1" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons">
+              </a>
+            </div>
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://hexo.io/zh-cn/" title="Hexo文档" target="_blank">Hexo文档</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://theme-next.iissnan.com/" title="NexT文档" target="_blank">NexT文档</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-toLocaleString-轻松实现多国语言价格数字格式化"><span class="nav-number">1.</span> <span class="nav-text">使用 .toLocaleString() 轻松实现多国语言价格数字格式化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-toLocaleString"><span class="nav-number">1.1.</span> <span class="nav-text">使用 .toLocaleString()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-locales-参数"><span class="nav-number">1.2.</span> <span class="nav-text">使用 locales 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-options-参数"><span class="nav-number">1.3.</span> <span class="nav-text">使用 options 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#兼容性"><span class="nav-number">2.</span> <span class="nav-text">兼容性</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ren</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">16.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+ 
+    <span id="busuanzi_container_site_uv">
+        <br>您是第
+        <span id="busuanzi_value_site_uv"></span>
+        个小伙伴
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_pv">
+        本站总浏览
+        <span id="busuanzi_value_site_pv"></span>
+        次
+    </span>
+ 
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+    <span class="site-pv">
+      
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+<!-- 背景动画 -->
+<script type="text/javascript" src="/js/src/particle.js"></script>
+
+</body>
+</html>
