@@ -81,26 +81,25 @@
 
 
 
-<meta name="description" content="什么是 typescript？Typescript 是 Javascript 的强类型版本。然后在编译期间去掉类型和特有语法，生成纯粹的 JavaScript 代码。由于最终在浏览器中运行的仍然是 JavaScript，所以 TypeScript 并不依赖于浏览器的支持，也并不会带来兼容性问题。 TypeScript 是 JavaScript 的超集，这意味着它支持所有的 JavaScript">
+<meta name="description" content="什么是 typescript？Typescript 是 Javascript 的强类型版本。然后在编译期间去掉类型和特有语法，生成纯粹的 JavaScript 代码。由于最终在浏览器中运行的仍然是 JavaScript，所以 TypeScript 并不依赖于浏览器的支持，也并不会带来兼容性问题。 TypeScript 是 JavaScript 的超集，这意味着它支持所有的 JavaScript 语">
 <meta name="keywords" content="Vue,Typescript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue+Typescript 项目起手式">
 <meta property="og:url" content="http://yoursite.com/2019/07/29/Vue-Typescript-项目起手式/index.html">
 <meta property="og:site_name" content="Ren&#39;s Blog">
-<meta property="og:description" content="什么是 typescript？Typescript 是 Javascript 的强类型版本。然后在编译期间去掉类型和特有语法，生成纯粹的 JavaScript 代码。由于最终在浏览器中运行的仍然是 JavaScript，所以 TypeScript 并不依赖于浏览器的支持，也并不会带来兼容性问题。 TypeScript 是 JavaScript 的超集，这意味着它支持所有的 JavaScript">
+<meta property="og:description" content="什么是 typescript？Typescript 是 Javascript 的强类型版本。然后在编译期间去掉类型和特有语法，生成纯粹的 JavaScript 代码。由于最终在浏览器中运行的仍然是 JavaScript，所以 TypeScript 并不依赖于浏览器的支持，也并不会带来兼容性问题。 TypeScript 是 JavaScript 的超集，这意味着它支持所有的 JavaScript 语">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://www.xcode.me/wp-content/uploads/2015/11/microsft-type-script.jpg">
 <meta property="og:image" content="http://yoursite.com/images/ts_router.png">
 <meta property="og:image" content="http://yoursite.com/images/ts_main.png">
 <meta property="og:image" content="http://yoursite.com/images/ts_vuex.png">
 <meta property="og:image" content="http://yoursite.com/images/ts_$baseUrl.png">
 <meta property="og:image" content="http://yoursite.com/images/ts_declare.png">
 <meta property="og:image" content="http://yoursite.com/images/ie_error.jpg">
-<meta property="og:updated_time" content="2021-12-21T05:58:22.462Z">
+<meta property="og:updated_time" content="2021-12-22T08:33:51.836Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue+Typescript 项目起手式">
-<meta name="twitter:description" content="什么是 typescript？Typescript 是 Javascript 的强类型版本。然后在编译期间去掉类型和特有语法，生成纯粹的 JavaScript 代码。由于最终在浏览器中运行的仍然是 JavaScript，所以 TypeScript 并不依赖于浏览器的支持，也并不会带来兼容性问题。 TypeScript 是 JavaScript 的超集，这意味着它支持所有的 JavaScript">
-<meta name="twitter:image" content="https://www.xcode.me/wp-content/uploads/2015/11/microsft-type-script.jpg">
+<meta name="twitter:description" content="什么是 typescript？Typescript 是 Javascript 的强类型版本。然后在编译期间去掉类型和特有语法，生成纯粹的 JavaScript 代码。由于最终在浏览器中运行的仍然是 JavaScript，所以 TypeScript 并不依赖于浏览器的支持，也并不会带来兼容性问题。 TypeScript 是 JavaScript 的超集，这意味着它支持所有的 JavaScript 语">
+<meta name="twitter:image" content="http://yoursite.com/images/ts_router.png">
 
 
 
@@ -408,8 +407,7 @@
       
 
       
-        <p><img src="https://www.xcode.me/wp-content/uploads/2015/11/microsft-type-script.jpg" alt></p>
-<h1 id="什么是-typescript？"><a href="#什么是-typescript？" class="headerlink" title="什么是 typescript？"></a>什么是 typescript？</h1><p><code>Typescript</code> 是 <code>Javascript</code> 的强类型版本。然后在编译期间去掉类型和特有语法，生成纯粹的 <code>JavaScript</code> 代码。由于最终在浏览器中运行的仍然是 <code>JavaScript</code>，所以 <code>TypeScript</code> 并不依赖于浏览器的支持，也并不会带来兼容性问题。</p>
+        <h1 id="什么是-typescript？"><a href="#什么是-typescript？" class="headerlink" title="什么是 typescript？"></a>什么是 typescript？</h1><p><code>Typescript</code> 是 <code>Javascript</code> 的强类型版本。然后在编译期间去掉类型和特有语法，生成纯粹的 <code>JavaScript</code> 代码。由于最终在浏览器中运行的仍然是 <code>JavaScript</code>，所以 <code>TypeScript</code> 并不依赖于浏览器的支持，也并不会带来兼容性问题。</p>
 <p><code>TypeScript</code> 是 <code>JavaScript</code> 的超集，这意味着它支持所有的 <code>JavaScript</code> 语法。并在此之上对 <code>JavaScript</code> 添加了一些扩展，如 <strong><em>class</em></strong> / <strong><em>interface</em></strong> / <strong><em>module</em></strong> 等。这样会大大提升代码的可阅读性。</p>
 <p>与此同时，<code>TypeScript</code> 也是 <code>JavaScript ES6</code> 的超集，<strong>Google</strong> 的 <strong>Angular 2.0</strong> 也宣布采用 <code>TypeScript</code> 进行开发。这更是充分说明了这是一门面向未来并且脚踏实地的语言。</p>
 <a id="more"></a>
@@ -624,7 +622,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -760,7 +758,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">16.6k</span>
+    <span title="Site words total count">23.4k</span>
   
 </div>
 
