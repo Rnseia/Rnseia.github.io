@@ -89,14 +89,14 @@
 <meta property="og:site_name" content="Ren&#39;s Blog">
 <meta property="og:description" content="什么是 SSR?SSR 全拼为 Server-Side Render，意思为服务端渲染。Vue 本身是一个客户端程序的渲染框架，运行环境通常是浏览器、webview 和 electron 等。他的作用主要是将 Vue 组件转换成客户端可用的代码片段，来生成 DOM 和操作 DOM。而服务端渲染指的是在服务端将客户端所需加载渲染的 HTML 一次性转成字符串返回给客户端渲染，最后将这些静态标记激活成">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://192.168.162.133:4999/server/../Public/Uploads/2020-12-04/5fca13e0b4446.png">
-<meta property="og:image" content="http://192.168.162.133:4999/server/../Public/Uploads/2020-12-04/5fca142fa9eb4.png">
-<meta property="og:image" content="http://192.168.162.133:4999/server/../Public/Uploads/2020-12-04/5fca146398c44.png">
-<meta property="og:updated_time" content="2021-12-23T02:35:00.241Z">
+<meta property="og:image" content="http://yoursite.com/images/vue-ssr/1.png">
+<meta property="og:image" content="http://yoursite.com/images/vue-ssr/2.png">
+<meta property="og:image" content="http://yoursite.com/images/vue-ssr/3.png">
+<meta property="og:updated_time" content="2021-12-23T02:48:53.905Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Vue创建第一个SSR应用">
 <meta name="twitter:description" content="什么是 SSR?SSR 全拼为 Server-Side Render，意思为服务端渲染。Vue 本身是一个客户端程序的渲染框架，运行环境通常是浏览器、webview 和 electron 等。他的作用主要是将 Vue 组件转换成客户端可用的代码片段，来生成 DOM 和操作 DOM。而服务端渲染指的是在服务端将客户端所需加载渲染的 HTML 一次性转成字符串返回给客户端渲染，最后将这些静态标记激活成">
-<meta name="twitter:image" content="http://192.168.162.133:4999/server/../Public/Uploads/2020-12-04/5fca13e0b4446.png">
+<meta name="twitter:image" content="http://yoursite.com/images/vue-ssr/1.png">
 
 
 
@@ -471,7 +471,7 @@
 </tbody>
 </table>
 <h2 id="了解-ssr-的基本原理和渲染过程"><a href="#了解-ssr-的基本原理和渲染过程" class="headerlink" title="了解 ssr 的基本原理和渲染过程"></a>了解 ssr 的基本原理和渲染过程</h2><p>做个对比</p>
-<p>先看一下 SPA 的加载过程：<br><img src="http://192.168.162.133:4999/server/../Public/Uploads/2020-12-04/5fca13e0b4446.png" alt="SPA加载的过程"></p>
+<p>先看一下 SPA 的加载过程：<br><img src="/images/vue-ssr/1.png" alt="SPA加载的过程"></p>
 <p>一个 SPA 项目的页面被访问时，大致上有这几个过程：</p>
 <ol>
 <li>浏览器访问获取 index.html 并加载 index.html。</li>
@@ -480,9 +480,9 @@
 <li>页面数据请求，渲染返回的数据。</li>
 <li>路由切换，app 添加对应的资源到页面，解析完成切换</li>
 </ol>
-<p>接下来了解一下 SSR 一个基本的加载和执行的过程：<br><img src="http://192.168.162.133:4999/server/../Public/Uploads/2020-12-04/5fca142fa9eb4.png" alt="SSR加载的过程"></p>
+<p>接下来了解一下 SSR 一个基本的加载和执行的过程：<br><img src="/images/vue-ssr/2.png" alt="SPA加载的过程"></p>
 <p>当客户端访问页面时，客户端首先会向服务端请求 HTML 页面，由于首页是在服务端渲染完成之后才被返回的，所以服务端需要根据客户端传递过来的地址，获取相应的组件，然后将组件转换成字符串之后拼接成一个完整的 html，返回给客户端。客户端在拿到文件流之后，对 HTML 文件进行一个解析渲染。由于拿到的文件是已经渲染好的页面，不需要做页面的渲染，但是仍然需要激活程序（执行 app.js），同步页面数据和状态（这里和 SPA 不同的地方是，<strong>SPA 是先加载 app.js，由 app.js 决定当前页面要加载哪些资源，在 SPA 中，首屏需要的静态资源都会被注入到 HTML 中一次性返回，不需要 app.js 控制</strong>）。当用户切换路由时，客户端要根据程序加载路由对应的静态资源文件并下载执行来切换路由，此时下载的静态文件只需要从已经打包生成好的静态资源文件中直接获取即可，不需要服务器再根据路由动态生成。</p>
-<p><img src="http://192.168.162.133:4999/server/../Public/Uploads/2020-12-04/5fca146398c44.png" alt></p>
+<p><img src="/images/vue-ssr/3.png" alt></p>
 <p><strong>如何获取对应的组件，将组件转换成字符串？</strong></p>
 <p>在实际的部署当中，所有的前端代码都会被 build 成静态资源，并且会对代码进行压缩。服务端在渲染首屏的时候需要根据路由匹配静态资源，vue 提供一个<code>**vue-server-renderer**</code>的插件，这个插件可以将组件编译成静态的 html 文件，并且会在 webpack 打包的时候记录静态资源的对应关系的 JSON 文件。</p>
 <p><strong>vue-server-renderer</strong></p>
